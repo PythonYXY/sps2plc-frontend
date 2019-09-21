@@ -1,0 +1,43 @@
+<button #openModalBtn [hidden]="true" data-toggle="modal" data-target="#reqDetailsModal">Open Modal</button>
+
+<div class="modal fade" id="reqDetailsModal" *ngIf="requirement">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Requirement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="reqTextarea">Requirement</label>
+          <textarea class="form-control" id="reqTextarea" rows="2"
+                    #reqTextarea (click)="getCaretPos(reqTextarea)" (keyup)="getCaretPos(reqTextarea)"
+                    [(ngModel)]="requirement.text" ></textarea>
+          <p class="small pull-right">line {{caretPos[0]}}:{{caretPos[1]}}</p>
+        </div>
+
+        <div class="form-group">
+          <label for="stateBadge">State</label>
+          <p id="stateBadge"><span class="badge"
+            [ngClass]="{'badge-green': requirement.compliant,
+                        'badge-yellow': requirement.notChecked || requirement.warning,
+                        'badge-red': requirement.error}">{{ requirement.state }}</span></p>
+        </div>
+
+        <div class="form-group">
+          <label for="errorTextarea">Error</label>
+          <textarea class="form-control" id="errorTextarea" disabled>{{ requirement.errorDescription }}</textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="save()" #saveBtn [disabled]="loading">
+          <i class="fa fa-spinner fa-spin" aria-hidden="true" *ngIf="loading">&nbsp;</i>Save
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeBtn>Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>

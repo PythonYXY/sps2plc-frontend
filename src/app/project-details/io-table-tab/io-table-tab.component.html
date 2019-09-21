@@ -1,0 +1,81 @@
+<div class="row tab-header">
+  <div class="col-10 pl-0">
+
+    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addIOModal">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      &nbsp;Add IO
+    </button>
+
+    <button type="button" class="btn btn-outline-primary" (click)="deleteSelected()" [disabled]="selected.length === 0">
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      &nbsp;Delete IO
+    </button>
+
+  </div>
+  <div class="col-2 pr-0">
+    <input
+      type='text'
+      class="form-control search-field pull-right"
+      placeholder='Search...'
+      (keyup)='updateFilter($event)'
+      [(ngModel)]="searchValue"
+    />
+  </div>
+</div>
+
+<ngx-datatable #table
+               class="material"
+               [columnMode]="'standard'"
+               [headerHeight]="50"
+               [footerHeight]="50"
+               [rowHeight]="'auto'"
+               [limit]="10"
+               [selected]="selected"
+               [selectionType]="'checkbox'"
+               [rows]='rows'
+               [rowClass]="getRowClass"
+               [reorderable]="true">
+  <ngx-datatable-column
+    [width]="30"
+    [sortable]="false"
+    [canAutoResize]="false"
+    [draggable]="false"
+    [resizeable]="false"
+    [headerCheckboxable]="false"
+    [checkboxable]="true">
+  </ngx-datatable-column>
+  <ngx-datatable-column name="IO Name" prop="IOName" [width]="700"></ngx-datatable-column>
+  <ngx-datatable-column name="IO Number" prop="IONumber" [width]="350"></ngx-datatable-column>
+</ngx-datatable>
+
+
+
+<div class="modal fade" tabindex="-1" id="addIOModal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New IO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="IOForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-control-label" for="IOName">IO Name</label>
+            <input class="form-control" id="IOName" type="text" formControlName="IOName">
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" for="IONumber">IO Number</label>
+            <input class="form-control" id="IONumber" type="text" formControlName="IONumber">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" (click)="addIO()">Save
+          </button>
+          <button type="reset" class="btn btn-secondary" data-dismiss="modal" (click)="reset()" #closeBtn>Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="pl-2" style="border-left: 1px solid #eeeeee; height: 100%;">
+  <p>{{_property.text}}</p>
+  <p *ngFor="let property of _additionalProperties">
+    {{ 'and ' + property.text }}
+  </p>
+
+  <div [formGroup]="propertyForm">
+    <div formArrayName="propertyFormArray">
+        <fieldset class="pt-2" *ngFor="let control of propertyFormArray.controls; let i = index; trackBy: customTrackBy;">
+          <label class="form-control-label" [attr.for]="'propertyExpr' + i">Expr {{i + 1}}</label>
+          <input class="form-control" [formControlName]="i" [matAutocomplete]="auto" [attr.id]="'propertyExpr' + i"  [ngClass]="{'is-valid': control.valid, 'is-invalid': !(control.valid || control.pristine)}">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </fieldset>
+    </div>
+  </div>
+</div>

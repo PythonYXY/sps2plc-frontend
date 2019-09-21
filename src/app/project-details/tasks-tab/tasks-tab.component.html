@@ -1,0 +1,58 @@
+
+
+<div class="tab-header clearfix">
+  <button type="button" class="btn btn-primary pull-right" [disabled]="codeLoading" (click)="getCode()">
+    <i class="fa fa-play" aria-hidden="true" *ngIf="!codeLoading"></i>
+    <i class='fa fa-spinner fa-spin' *ngIf="codeLoading"></i>
+    &nbsp;Generate
+  </button>
+
+  <button type="button" *ngIf="task.generate" class="btn btn-primary pull-right" (click)="downloadCode()">
+    <i class="fa fa-download" aria-hidden="true"></i>
+     Download
+  </button>
+
+</div>
+<div *ngIf="task !== null">
+  <div class="card" *ngIf="task.generate">
+    <div class="card-body">
+        <h4 class="card-title">{{task.description}}</h4>
+
+      <h6 class="card-subtitle mb-2 text-muted">{{task.timestamp}}</h6>
+
+      <div class="card-text">
+        <div>
+          <textarea class="form-control" readonly="readonly" rows="15">{{task.code}}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="task.priority">
+    <div *ngFor="let reqArr of reqArray; index as i">
+      <div class="card mt-5" *ngIf="!isHidden[i]" [@hiddenDisplay]>
+        <h4 class="card-header">{{task.description}} <strong>{{ getObject(reqArr[0][1]) }}</strong>
+<!--          <small><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"-->
+<!--                    title="越靠前的规约优先级越高"></i></small>-->
+        </h4>
+        <div class="card-body">
+
+          <div class="card-text">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let req of reqArr; index as i">
+                  {{ req[1].text }}
+                  <input class="form-control pull-right" style="width: 60px; height: 25px;" [(ngModel)]="req[2]">
+                </li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-primary pull-right mt-3" [disabled]="priorityLoading" (click)="updatePriority(i)">
+            <i class="fa fa-upload" aria-hidden="true" *ngIf="!priorityLoading"></i>
+            <i class='fa fa-spinner fa-spin' *ngIf="priorityLoading"></i>
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

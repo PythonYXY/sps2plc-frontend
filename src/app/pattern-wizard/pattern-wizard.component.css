@@ -1,0 +1,10 @@
+
+
+.req-field {
+  display: block;
+  overflow: hidden;
+}
+
+.req-field > input {
+  width: 100%;
+}

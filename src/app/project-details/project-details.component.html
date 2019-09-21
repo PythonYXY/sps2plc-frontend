@@ -1,0 +1,37 @@
+<div class="row top-container">
+  <div class="col-md-8">
+    <h1 *ngIf="project != null">{{ project.name }}</h1>
+  </div>
+
+</div>
+
+
+<div class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active show" data-toggle="tab" href="#requirements">Requirements</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#tasks">Tasks</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#io-table">I/O table</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade in active show" id="requirements">
+      <app-requirements-tab [projectId]="projectId"></app-requirements-tab>
+    </div>
+
+    <div class="tab-pane fade show" id="tasks">
+      <app-tasks-tab [projectId]="projectId"></app-tasks-tab>
+    </div>
+
+    <div class="tab-pane fade show" id="io-table">
+      <app-io-table-tab [projectId]="projectId"></app-io-table-tab>
+    </div>
+  </div>
+</div>
+

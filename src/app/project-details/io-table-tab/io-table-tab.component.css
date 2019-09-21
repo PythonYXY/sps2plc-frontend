@@ -1,0 +1,26 @@
+.tab-header {
+  margin: 1em 0;
+  display: flex;
+  height: 2.5em;
+  width: 100%;
+}
+
+.btn {
+  margin-left: 0.5em;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+
+.search-field {
+  width:100%;
+  margin: 0;
+}
+
+.tab-progress {
+  margin-top: 1em;
+}
+
