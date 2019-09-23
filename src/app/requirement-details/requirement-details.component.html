@@ -20,9 +20,9 @@
 
         <div class="form-group">
           <label for="stateBadge">State</label>
+<!--          'badge-yellow': requirement.notChecked || requirement.warning,-->
           <p id="stateBadge"><span class="badge"
             [ngClass]="{'badge-green': requirement.compliant,
-                        'badge-yellow': requirement.notChecked || requirement.warning,
                         'badge-red': requirement.error}">{{ requirement.state }}</span></p>
         </div>
 

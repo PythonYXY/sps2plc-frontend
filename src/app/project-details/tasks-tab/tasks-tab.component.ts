@@ -8,7 +8,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {RequirementService} from '../../services/requirement.service';
 import {
   trigger,
-  state,
   style,
   animate,
   transition
@@ -44,6 +43,7 @@ export class TasksTabComponent implements OnInit {
   task: Task;
   reqArray: any[][];
   priorityArray: number[][];
+  circularDependencyReqArray: string[][];
   isHidden: boolean[];
 
   codeLoading = false;
@@ -54,7 +54,7 @@ export class TasksTabComponent implements OnInit {
               private requirementService: RequirementService) { }
 
   ngOnInit() {
-    this.task = new Task({priority: false, generate: false});
+    this.task = new Task({priority: false, generate: false, conflict: false});
     this.finishedTask();
   }
 
@@ -100,7 +100,19 @@ export class TasksTabComponent implements OnInit {
         );
       }
     }
+  }
 
+  showCircularDependencyArray() {
+    let arr = this.task.circularDependencyArray.map(elem => elem.split(','));
+    this.circularDependencyReqArray = new Array(arr.length);
+    for (let i = 0; i < arr.length; i++) {
+      this.circularDependencyReqArray[i] = new Array(arr[i].length);
+      for (let j = 0; j < arr[i].length; j++) {
+        this.requirementService.getRequirement(Number(arr[i][j])).subscribe(
+          req => this.circularDependencyReqArray[i][j] = req.text
+        );
+      }
+    }
   }
 
   getCode() {
@@ -108,8 +120,11 @@ export class TasksTabComponent implements OnInit {
     this.taskService.getTask(this.projectId).subscribe(
       response => {
         this.task = new Task(response);
+        console.log(this.task);
         if (this.task.priority) {
           this.showPriority();
+        } else if (this.task.circular) {
+          this.showCircularDependencyArray();
         }
         this.codeLoading = false;
       },
@@ -131,7 +146,7 @@ export class TasksTabComponent implements OnInit {
         });
       }
       this.task.priorityArray = this.priorityArray.map(arr => arr.join('<'));
-      console.log(this.task.priorityArray);
+
       this.taskService.postTask(this.task).subscribe(
         response => {
           this.task = new Task(response);
