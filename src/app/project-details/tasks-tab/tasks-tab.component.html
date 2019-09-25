@@ -1,5 +1,3 @@
-
-
 <div class="tab-header clearfix">
   <button type="button" class="btn btn-primary pull-right" [disabled]="codeLoading" (click)="getCode()">
     <i class="fa fa-play" aria-hidden="true" *ngIf="!codeLoading"></i>
@@ -40,7 +38,7 @@
           <div class="card-text">
             <ul class="list-group">
                 <li class="list-group-item" *ngFor="let req of reqArr; index as i">
-                  {{ req[1].text }}
+                  {{ req[1].id + ": " + req[1].text }}
                   <input class="form-control pull-right" style="width: 60px; height: 25px;" [(ngModel)]="req[2]">
                 </li>
             </ul>
