@@ -130,7 +130,7 @@
 
 <div class="pt-3 pr-1">
   <button class="btn btn-primary float-right" (click)="createRequirement()" [disabled]="!(propertyValid && scopeValid)">Create</button>
-  <button id="emptyExprButton" hidden data-toggle="modal" data-target="#emptyExprModal"></button>
+  <button id="wrongRequirementButton" hidden data-toggle="modal" data-target="#wrongRequirementModal"></button>
 
   <!-- The Modal-->
   <div class="modal fade" id="wrongRequirementModal">
@@ -142,7 +142,7 @@
         </div>
 
         <div class="modal-body">
-          The property <strong>Existence</strong> can only <strong>delay without end</strong>.
+          The requirement is not valid!
         </div>
 
         <div class="modal-footer">

@@ -105,18 +105,21 @@ export class Property {
   description: string;
   template: string;
   text: string;
-  target: string;
+  targets: string[];
+  targetNum: number;
 
-  constructor(name: string, template: string, description: string) {
+  constructor(name: string, template: string, targetNum: number, description: string) {
     this.name = name;
     this.template = template;
+    this.targetNum = targetNum;
     this.description = description;
     this.text = template;
-    this.target = '';
+    this.targets = new Array(targetNum).fill('');
+
   }
 
   copy() {
-    return new Property(this.name, this.template, this.description);
+    return new Property(this.name, this.template, this.targetNum, this.description);
   }
 }
 

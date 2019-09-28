@@ -51,22 +51,28 @@ export class PropertyExpressionWizardComponent implements OnInit {
   @Input()
   set property(property: Property) {
     this._property = property;
-    this._property.target = '';
+    this._property.targets = new Array(property.targetNum).fill('');
 
     while (this.propertyFormArray.length > 0) {
       this.propertyFormArray.removeAt(this.propertyFormArray.length - 1);
     }
-    this.propertyFormArray.controls.push(this.fb.control('', [Validators.required, Validators.pattern(/^\S+$/)]));
-
     this.filteredOptions.splice(0, this.filteredOptions.length);
-    this.filteredOptions[0] = this.propertyFormArray.controls[0].valueChanges.pipe(
-      tap(value => {
-        this._property.target = value;
-        this.update();
-      }),
-      startWith(''),
-      map(value => this.filter(value))
-    );
+
+    this._property.targets.forEach((value, index) => {
+      let control = this.fb.control(value, [Validators.required, Validators.pattern(/^\S+$/)]);
+
+      this.filteredOptions.push(
+        control.valueChanges.pipe(
+          tap(changedValue => {
+            this._property.targets[index] = changedValue;
+            this.update();
+          }),
+          startWith(''),
+          map(changedValue => this.filter(changedValue))
+        ));
+
+      this.propertyFormArray.controls.push(control);
+    });
 
     this.update();
   }
@@ -79,18 +85,22 @@ export class PropertyExpressionWizardComponent implements OnInit {
   set additionalProperties(additionalProperties: Property[]) {
     this._additionalProperties = additionalProperties;
     if (this.additionalProperties.length !== 0) {
-      let length = this._additionalProperties.length;
-      let control = this.fb.control('', Validators.required);
-      this.filteredOptions[length] = control.valueChanges.pipe(
-        tap(value => {
-          this._additionalProperties[length - 1].target = value;
-          this.update();
-        }),
-        startWith(''),
-        map(value => this.filter(value))
-      );
+      let newProperty = this._additionalProperties[this._additionalProperties.length - 1];
 
-      this.propertyFormArray.push(control);
+      newProperty.targets.forEach((value, index) => {
+        let control = this.fb.control(value, [Validators.required, Validators.pattern(/^\S+$/)]);
+        this.filteredOptions.push(control.valueChanges.pipe(
+          tap(changedValue => {
+            newProperty.targets[index] = changedValue;
+            this.update();
+          }),
+          startWith(''),
+          map(changedValue => this.filter(changedValue))
+        ));
+
+        this.propertyFormArray.controls.push(control);
+      });
+
       this.update();
     }
   }
@@ -99,9 +109,11 @@ export class PropertyExpressionWizardComponent implements OnInit {
     this.allProperties = [this._property, ...this._additionalProperties];
     let properties: Property[] = this.allProperties;
 
+    let counter = 0;
     for (let index = 0; index < this.allProperties.length; index++) {
       this.allProperties[index].text = this.allProperties[index].template.replace(/{(\d+)}/g, function(match, number): string {
-        return properties[index].target === '' ? `{${index + 1}}` : properties[index].target;
+        counter++;
+        return properties[index].targets[parseInt(number, 10) - 1] === '' ? `{${counter}}` : properties[index].targets[parseInt(number, 10) - 1];
       });
     }
 

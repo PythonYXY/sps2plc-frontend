@@ -71,18 +71,27 @@ export class PatternWizardComponent implements OnInit {
     new Property(
       'Universality',
       '{1} is true',
+      1,
       'Universality要求控制对象在Scope内持续成立。'
     ),
     new Property(
       'Absence',
       '{1} is false',
+      1,
       'Absence要求控制对象在Scope内始终不成立。'
     ),
     new Property(
       'Existence',
       '{1} exists',
-      'Existence要求控制对象在Scope的第一个时间点成立一次，在其余时间点皆不成立。'
+      1,
+      'Existence要求控制对象在Scope的第一个时间点成立一次，在Scope内的其余时间点皆不成立。'
     ),
+    new Property(
+      'Interlock',
+      '({1} and {2}) is false',
+      2,
+      'Interlock要求两个控制对象在Scope内不能同时成立。'
+    )
   ];
 
   selectedScope: Scope = null;
@@ -152,7 +161,8 @@ export class PatternWizardComponent implements OnInit {
   }
 
   createRequirement() {
-    if (this.req.indexOf('exists') !== -1 && this.selectedDelay !== null && this.selectedDelay !== this.delayWithoutEnd) {
+    if ((this.selectedProperty.name === 'Existence' && this.selectedDelay !== null && this.selectedDelay !== this.delayWithoutEnd) ||
+        (this.selectedProperty.name === 'Interlock' && this.selectedScope.name !== 'Globally')) {
       document.getElementById('wrongRequirementButton').click();
       return;
     }
