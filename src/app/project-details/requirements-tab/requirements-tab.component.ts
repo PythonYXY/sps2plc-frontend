@@ -3,6 +3,7 @@ import { Requirement } from '../../models/requirement';
 import { RequirementService } from '../../services/requirement.service';
 import { AlertService } from '../../alert/alert.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { saveAs } from 'file-saver/FileSaver';
 
 @Component({
   selector: 'app-requirements-tab',
@@ -74,16 +75,14 @@ export class RequirementsTabComponent implements OnInit {
           this.uploadLoading = false;
         }
       );
-
     }
   }
 
   getRowClass(req) {
-    // console.log(req);
     return {
       'row-green': req.compliant,
       'row-red': req.error,
-      'row-yellow': req.waning,
+      'row-yellow': req.notChecked,
       'row-disabled': req.disabled
     };
   }
@@ -148,4 +147,15 @@ export class RequirementsTabComponent implements OnInit {
     // Remove previously selected items
     this.selected = [];
   }
+
+  downloadRequirements() {
+    const blob = new Blob([this.requirements.map(req => {
+      if (!req.disabled) {
+        return '[' + req.id + ']' + req.text;
+      }
+    }).join('\n')], { type: 'text/plain' });
+
+    saveAs(blob, 'project-' + this.projectId + '-requirements');
+  }
 }
+

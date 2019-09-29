@@ -38,8 +38,6 @@ export class RequirementService {
 
   constructor(private http: HttpClient) { }
 
-  getItemList(projectId: number): Set<string> { return this.items.has(projectId) ? this.items.get(projectId) : new Set<string>(); }
-
   ObjectFilter(req: string): string[] {
     return req.slice(0, req.length - 1).split(/\(|\)| |,/)
       .filter(value => {

@@ -12,6 +12,7 @@ export class Task {
   priorityArray: string[];
   circularDependencyArray: string[];
   code: string;
+  requirements: string;
 
   constructor(task: any) {
     this.projectId = task.projectId;
@@ -21,6 +22,7 @@ export class Task {
     this.priorityArray = task.priorityArray;
     this.circularDependencyArray = task.circularDependencyArray;
     this.code = task.code;
+    this.requirements = task.requirements;
   }
 
   get priority(): boolean { return this.status === TaskStatus.PRIORITY; }

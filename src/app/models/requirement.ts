@@ -1,6 +1,7 @@
 export enum ReqState {
   COMPLIANT = 'COMPLIANT',
   ERROR = 'ERROR',
+  NOT_CHECKED = 'NOT_CHECKED'
 }
 
 export class Requirement {
@@ -25,7 +26,8 @@ export class Requirement {
 
   get compliant(): boolean { return this.state === ReqState.COMPLIANT; }
 
-
   get error(): boolean { return this.state === ReqState.ERROR; }
+
+  get notChecked(): boolean { return this.state === ReqState.NOT_CHECKED; }
 
 }

@@ -162,7 +162,12 @@ export class TasksTabComponent implements OnInit {
 
   downloadCode() {
     const blob = new Blob([this.task.code], { type: 'text/plain' });
-    saveAs(blob, this.task.timestamp.replace(/ |:/g, '-'));
+    saveAs(blob, this.task.timestamp.replace(/ |:/g, '-') + '-ILCode');
+  }
+
+  downloadRequirements() {
+    const blob = new Blob([this.task.requirements], { type: 'text/plain' });
+    saveAs(blob, this.task.timestamp.replace(/ |:/g, '-') + '-Requirements');
   }
 
 }

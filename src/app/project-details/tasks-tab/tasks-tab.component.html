@@ -7,7 +7,12 @@
 
   <button type="button" *ngIf="task.generate" class="btn btn-primary pull-right" (click)="downloadCode()">
     <i class="fa fa-download" aria-hidden="true"></i>
-     Download
+     Download Code
+  </button>
+
+  <button type="button" *ngIf="task.generate" class="btn btn-primary pull-right" (click)="downloadRequirements()">
+    <i class="fa fa-download" aria-hidden="true"></i>
+    Download Requirements
   </button>
 
 </div>
