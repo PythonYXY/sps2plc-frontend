@@ -22,7 +22,9 @@ export class IoTableService {
 
   constructor(private http: HttpClient) { }
 
-  getItems() { return this.items; }
+  getItems() {
+    return this.items;
+  }
 
   getIoTable(projectId: number): Observable<IOMap[]> {
     const params = new HttpParams().set('project', projectId.toString());

@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = '/projects';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/projects';
 
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate([this.returnUrl]);
@@ -34,8 +34,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loading = true;
-    this.router.navigate([this.returnUrl]);
-
+    this.authenticationService.login(this.model.username, this.model.password)
+      .subscribe(
+        data => {
+          this.alertService.success('Login succesful!');
+          this.loading = false;
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          console.log(error);
+          this.alertService.error(error.message);
+          this.loading = false;
+        });
   }
 
 }

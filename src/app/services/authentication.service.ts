@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 
-const CURRENT_USER = 'currentUser';
+export const CURRENT_USER = 'currentUser';
 
 @Injectable()
 export class AuthenticationService {

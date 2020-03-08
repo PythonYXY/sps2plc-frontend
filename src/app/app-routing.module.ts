@@ -8,11 +8,10 @@ import { PatternWizardComponent } from './pattern-wizard/pattern-wizard.componen
 
 
 const routes: Routes = [
-  // { path: '', component: LoginComponent },
-  { path: '', redirectTo: 'projects', pathMatch: 'full'},
-  { path: 'projects', component: ProjectsComponent},
-  { path: 'projects/:projectId', component: ProjectDetailsComponent},
-  { path: 'projects/:projectId/addReq', component: PatternWizardComponent},
+  { path: '', component: LoginComponent },
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard]},
+  { path: 'projects/:projectId', component: ProjectDetailsComponent, canActivate: [AuthGuard]},
+  { path: 'projects/:projectId/addReq', component: PatternWizardComponent,  canActivate: [AuthGuard]},
 
   // otherwise redirect to home
   { path: '**', redirectTo: '' }

@@ -3,6 +3,11 @@
   <div class="container">
 
     <a class="navbar-brand" routerLink="/">SPS2PLC</a>
+    <ul class="navbar-nav navbar-right" *ngIf="authenticationService.isAuthenticated()">
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()" routerLink="/" >Logout</a>
+      </li>
+    </ul>
   </div>
 </nav>
 
@@ -16,13 +21,12 @@
   </div>
 </div>
 
-<!-- credits -->
-<!--<footer>-->
-<!--  <div class="container">-->
-<!--    <div class="hline"></div>-->
-<!--    <p class="small">-->
-<!--      Copyright © 2019 Maps-->
-<!--    </p>-->
-<!--  </div>-->
+<footer>
+  <div class="container">
+    <div class="hline"></div>
+    <p class="small">
+      Copyright © 2020 Maps | All Rights Reserved
+    </p>
+  </div>
 
-<!--</footer>-->
+</footer>
