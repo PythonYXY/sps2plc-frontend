@@ -34,7 +34,7 @@
   <div *ngIf="task.priority">
     <div *ngFor="let reqArr of reqArray; index as i">
       <div class="card mt-5" *ngIf="!isHidden[i]" [@hiddenDisplay]>
-        <h4 class="card-header">{{task.description}} <strong>{{ getObject(reqArr[0][1]) }}</strong>
+        <h4 class="card-header">{{task.description}}
 <!--          <small><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"-->
 <!--                    title="越靠前的规约优先级越高"></i></small>-->
         </h4>

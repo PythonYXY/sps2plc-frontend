@@ -15,25 +15,39 @@ import {forkJoin, Observable} from 'rxjs';
 })
 export class PatternWizardComponent implements OnInit {
 
-  delayWithEnd: Delay = new Delay(
-    'With end',
-    'delayL = {t1}, delayR = {t2}',
+  delayWithEnd1: Delay = new Delay(
+    'DelayWithEnd1',
+    'between {t1} timeUnits and {t2} timeUnits',
     2,
-    'Delay with end使Scope的左端点成立时间相对原左端点延迟t1个时间单位，并且若原Scope的时间长度大于t2个时间单位，则Scope的右端点成立时间相对原左端点延迟t2个时间单位。'
+    'DelayWithEnd1使Scope的左端点成立时间相对原左端点延迟t1个时间单位，并且若原Scope的时间长度大于t2个时间单位，则Scope的右端点成立时间相对原左端点延迟t2个时间单位。'
+  );
+
+  delayWithEnd2: Delay = new Delay(
+    'DelayWithEnd2',
+    'within {t1} timeUnits',
+    1,
+    'DelayWithEnd2使Scope的左端点成立时间相对原左端点延迟0个时间单位，并且若原Scope的时间长度大于t1个时间单位，则Scope的右端点成立时间相对原左端点延迟t1个时间单位。'
   );
 
   delayWithoutEnd: Delay = new Delay(
-    'Without end',
-    'delayL = {t1}',
+    'DelayWithoutEnd',
+    'after {t1} timeUnits',
     1,
-    'Delay without end使Scope的左端点成立时间相对原左端点延迟t1个时间单位。'
+    'DelayWithoutEnd使Scope的左端点成立时间相对原左端点延迟t1个时间单位。'
   );
 
   delayOnBothSides: Delay = new Delay(
-    'On both sides',
-    'delayL = {t1}, delayRE = {t2}',
+    'DelayOnBothSides',
+    'after {t1} timeUnits and the property still holds for {t2} timeUnits after the end of the scope',
     2,
-    'Delay on both sides使Scope的左端点成立时间相对原左端点延迟t1个时间单位，同时使右端点成立时间相对原右端点延迟t2个时间单位。'
+    'DelayOnBothSides使Scope的左端点成立时间相对原左端点延迟t1个时间单位，同时使右端点成立时间相对原右端点延迟t2个时间单位。'
+  );
+
+  delayOnRightSide: Delay = new Delay(
+    'DelayOnRightSide',
+    'and the property still holds for {t1} timeUnits after the end of the scope',
+    1,
+    'DelayOnRightSide使Scope右端点成立时间相对原右端点延迟t1个时间单位。'
   );
 
   scopes: Scope[] = [
@@ -42,53 +56,53 @@ export class PatternWizardComponent implements OnInit {
       'Globally',
       'Globally对Property的成立Scope无要求。',
       0,
-      [this.delayWithEnd, this.delayWithoutEnd]
+      [this.delayWithoutEnd, this.delayWithEnd1, this.delayWithEnd2]
     ),
     new Scope(
       'After Q',
       'After {1}',
       'After Q要求Property在Q成立后必须成立。',
       1,
-      [this.delayWithoutEnd, this.delayWithEnd]
+      [this.delayWithoutEnd, this.delayWithEnd1, this.delayWithEnd2]
     ),
     new Scope(
       'After Q until R',
       'After {1} until {2}',
       'After Q until R要求Property在Q成立之后，在R成立之前的Scope内必须成立。',
       2,
-      [this.delayWithEnd, this.delayWithoutEnd, this.delayOnBothSides]
+      [this.delayWithoutEnd, this.delayWithEnd1, this.delayWithEnd2, this.delayOnRightSide, this.delayOnBothSides]
     ),
     new Scope(
       'When Q',
       'When {1}',
       'When Q要求Property在Q成立时也必须成立。',
       1,
-      [this.delayOnBothSides, this.delayWithoutEnd, this.delayWithEnd]
+      [this.delayWithoutEnd, this.delayWithEnd1, this.delayWithEnd2, this.delayOnRightSide, this.delayOnBothSides]
     ),
   ];
 
   properties: Property[] = [
     new Property(
       'Universality',
-      '{1} is true',
+      'it is always the case that {1} holds',
       1,
       'Universality要求控制对象在Scope内持续成立。'
     ),
     new Property(
       'Absence',
-      '{1} is false',
+      'it is never the case that {1} holds',
       1,
       'Absence要求控制对象在Scope内始终不成立。'
     ),
     new Property(
       'Existence',
-      '{1} exists',
+      '{1} exists immediately',
       1,
       'Existence要求控制对象在Scope的第一个时间点成立一次，在Scope内的其余时间点皆不成立。'
     ),
     new Property(
       'Interlock',
-      '({1} and {2}) is false',
+      'it is never the case that ({1} and {2}) hold',
       2,
       'Interlock要求两个控制对象在Scope内不能同时成立。'
     )
@@ -155,9 +169,8 @@ export class PatternWizardComponent implements OnInit {
     let propertiesTexts: string[] = [this.selectedProperty.text].concat(this.additionalProperties.map(property => property.text));
     this.req =  this.selectedScope.text +
       ', ' +
-      (this.selectedDelay === null ? '' : this.selectedDelay.text + ', ') +
       propertiesTexts.join(' and ') +
-      '.';
+      (this.selectedDelay === null ? '.' : ' ' + this.selectedDelay.text + '.');
   }
 
   createRequirement() {
@@ -170,7 +183,7 @@ export class PatternWizardComponent implements OnInit {
     let savedReqText: string[]  = [this.selectedProperty.text]
       .concat(this.additionalProperties.map(property => property.text))
       .map(property =>
-        this.selectedScope.text + ', ' + (this.selectedDelay === null ? '' : this.selectedDelay.text + ', ') + property + '.'
+        this.selectedScope.text + ', ' + property + (this.selectedDelay === null ? '.' : ' ' + this.selectedDelay.text + '.')
       );
 
     let observableBatch = [];

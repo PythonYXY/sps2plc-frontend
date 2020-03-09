@@ -1,0 +1,1 @@
+mv ./dist/* ../sps2plc-backend-maven/src/main/resources/static/resources 
